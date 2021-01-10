@@ -18,7 +18,7 @@ this_is_not_a_language_string = ['사비루사', 'sabirusa', '주세노보', 'ju
 this_is_not_a_language_re = []
 administrator = [681638258261753877]
 mute_list = []
-token = 'Nzg2MTIyNzA1MTY5OTQwNTMw.X9Bz0g.DVETW4aH57vKG6zDlwmeUzycc9E'
+token = 'my token'
 censor_on = False
 channel_num = 765202371554836530
 
