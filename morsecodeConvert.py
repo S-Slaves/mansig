@@ -44,18 +44,15 @@ async def morsecode_convert(message):
             for var in output_list:
                 for x in morse_code_kor:
                     if morse_code_kor[x] == var:
-                        # hgtk_list.append(x)
                         output_string += x
-            # output_string = hgtk.letter.compose()
         elif message.content.split()[1] == '-영' or message.content.split()[1] == '-영어':
             output_list = message.content.split()
             for var in output_list:
                 for x in morse_code_mis:
                     if morse_code_mis[x] == var:
-                        # hgtk_list.append(x)
                         output_string += x
     else:
-        for var in await decompose_string(message.content[6:]):
+        for var in await decompose_string(message.content[6:].lower()):
             if var in morse_code_kor:
                 output_list.append(morse_code_kor[var])
             elif var in morse_code_mis:

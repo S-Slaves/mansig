@@ -39,8 +39,10 @@ abbr_list_cho_cjj = ['ㄱ', 'ㄲ']  # 초성 + 중성 + 종성 꼴 약자 리스
 abbr_list_jung_cjj = ['ㅓ', 'ㅓ']  # 초성 + 중성 + 종성 꼴 약자 리스트 - 중성
 abbr_list_jong_cjj = ['ㅅ', 'ㅅ']  # 초성 + 중성 + 종성 꼴 약자 리스트 - 종성
 abbr_list_braille_cjj = ['⠸⠎', '⠠⠸⠎']  # 초성 + 중성 + 종성 꼴 약자 리스트 - 점자
-normal_list_letter = ['.', '?', '!', ',', ':', ';', '·', '/', '“', '”', '‘', '’']
-normal_list_braille = ['⠲', '⠦', '⠖', '⠐', '⠐⠂', '⠰⠆', '⠐⠆', '⠸⠌', '⠦', '⠴', '⠠⠦', '⠴⠄']
+normal_list_letter = ['.', '?', '!', ',', ':', ';', '·', '/', '“', '”', '‘', '’', '(', ')', '{', '}',
+                      '[', ']', '『', '』', '《', '》', '「', '」', '〈', '〉', '-', '―', '~']  # 기호 변환 - 기호
+normal_list_braille = ['⠲', '⠦', '⠖', '⠐', '⠐⠂', '⠰⠆', '⠐⠆', '⠸⠌', '⠦', '⠴', '⠠⠦', '⠴⠄', '⠦⠄', '⠠⠴', '⠦⠂', '⠐⠴',
+                       '⠦⠆', '⠰⠴', '⠰⠦', '⠴⠆', '⠰⠦', '⠴⠆', '⠐⠦', '⠴⠂', '⠐⠦', '⠴⠂', '⠤', '⠤⠤', '⠤⠤']  # 기호 변환 - 점자
 each_letter_list = []  # 각각의 글자 객체가 들어가는 리스트
 abbr_word_list_letter = ['그래서', '그러나', '그러면', '그러므로', '그런데', '그리고', '그리하여']  # 약어 목록 - 한글 (한·점 제16항)
 abbr_word_list_braille = ['⠁⠎', '⠁⠉', '⠁⠒', '⠁⠢', '⠁⠝', '⠁⠥', '⠁⠱']  # 약어 목록 - 점자 (한·점 제 16항)
@@ -100,7 +102,7 @@ async def abbreviation(cho, jung, jong, repl, mode='jj'):  # 점자 약자 변�
                 letter.braille = [letter.cho_braille, repl]
 
 
-async def braille(message):
+async def braille_convert(message):
     output_string = ''
 
     global letter
@@ -126,21 +128,27 @@ async def braille(message):
             letter = NormalLetter(letterlist[0], n)
             each_letter_list.append(letter)
 
-    open_or_close = True  # 열린 따옴표/닫힌 따옴표 구분, True일 때 열림
+    little_open_or_close = True  # 열린 작은따옴표/닫힌 작은따옴표 구분, True일 때 열림
+    large_open_or_close = True # 열린 큰따옴표/닫힌 큰타옴표 구분, True일 때 열림
     for letter in each_letter_list:  # 점자 변환 실시
         if type(letter) == NormalLetter:
             if letter.letter == ' ':
                 letter.braille.append("⠀")  # 일반 띄어쓰기를 점자용 공점으로
             else:
                 if letter.letter == "'" or letter.letter == '"':
-                    if open_or_close:
+                    if little_open_or_close:
                         letter.letter = letter.letter.replace("'", "‘")
-                        letter.letter = letter.letter.replace('"', "“")
-                        open_or_close = False
+                        little_open_or_close = False
                     else:
                         letter.letter = letter.letter.replace("'", "’")
+                        little_open_or_close = True
+                elif letter.letter == '"':
+                    if large_open_or_close:
+                        letter.letter = letter.letter.replace('"', "“")
+                        large_open_or_close = False
+                    else:
                         letter.letter = letter.letter.replace('"', "”")
-                        open_or_close = True
+                        large_open_or_close = True
                 for i in range(len(normal_list_letter)):
                     if letter.letter == normal_list_letter[i]:
                         letter.braille.append(normal_list_braille[i])  # 기호 변환
