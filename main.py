@@ -11,6 +11,7 @@ import md5Battle
 import choDown
 import brailleToolkit
 import mineSweepers
+import BF
 
 client = discord.Client()
 
@@ -143,6 +144,10 @@ async def on_message(message):
             if message.content[1:].startswith('촛엉'):
                 await choDown.cho_down(message)
                 await bot_log(message, '촛엉', 1, message.content[4:])
+            
+            if message.content[1:].startswith('BF'):
+                await BF.brainFuck(message)
+                await bot_log(message, 'BF', 1, message.content[4:])
 
             if message.content[1:].startswith('md5') or message.content[1:].startswith('md5배틀'):
                 await md5Battle.md5_battle(message)
