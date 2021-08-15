@@ -21,7 +21,7 @@ async def qrcode_create(message):
         img.save(pathlib.Path(f'./QR&Barcode assets/qr-code-{pathstring}-{rn}.png'), 'PNG')
         await message.channel.send(file=discord.File(pathlib.Path(f'./QR&Barcode assets/qr-code-{pathstring}-{rn}.png')))
     except FileNotFoundError:
-        await message.channel.send('문자열이 너무 길어서 QR코드를 만들지 못했어요!')
+        await message.channel.send('생성 중 오류 발생!')
 
 
 async def barcode_create(message):

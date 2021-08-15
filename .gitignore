@@ -1,5 +1,5 @@
 
-secret.py
+/code/secret.py
 *.png
 botlog.txt
 /code/__pycache__
