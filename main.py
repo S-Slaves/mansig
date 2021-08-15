@@ -35,7 +35,7 @@ async def on_ready():
     print(client.user.id)
     print(f'version: {discord.__version__}')
     print("==========")
-    await client.change_presence(status=discord.Status.online, activity=discord.Game(name="s도움"))
+    await client.change_presence(status=discord.Status.online, activity=discord.Game(name="!도움"))
     outfile = open('botlog.txt', 'a')
     outfile.write('\n\n')
     outfile.write(time.ctime())
