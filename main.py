@@ -3,6 +3,7 @@ import discord
 import hgtk
 import time
 import brailleConvert
+import secret
 import help
 import morsecodeConvert
 import codeCreate
@@ -13,7 +14,7 @@ import mineSweepers
 
 client = discord.Client()
 
-token = ''
+token = secret.bot_token
 
 async def bot_log(message, command_name, mode=0, string=''):
     if mode == 0:
