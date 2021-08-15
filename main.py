@@ -68,7 +68,7 @@ async def on_message(message):
                 await bot_log(message, '출력', 1, message.content[4:])
 
             if message.content[1:] == '안녕':
-                await message.channel.send('안녕하세요!')
+                await message.channel.send('만식이여유~! 진지 잡쉈슈?')
                 await bot_log(message, '안녕')
 
             if message.content[1:] == '핑':
@@ -109,11 +109,11 @@ async def on_message(message):
                     cal = calendar.month(int(cmd[1]), int(cmd[2]))
                     await message.channel.send('```' + cal + '```')
                 else:
-                    await message.channel.send('연도나 연도와 월을 입력해주세요.')
+                    await message.channel.send('연도 또는 연도+월을 입력해주셔유!')
                 await bot_log(message, '달력', 1, message.content[4:])
 
             if message.content[1:].startswith('시간'):
-                await message.channel.send(f'지금 시각은 {time.ctime()}')
+                await message.channel.send(f'지금 시각은 {time.ctime()}래유~')
                 await bot_log(message, '시간')
 
             if message.content[1:].startswith('qr'):
@@ -138,7 +138,7 @@ async def on_message(message):
                 elif message.content.split()[1] == '-점자로':
                     await brailleToolkit.braille_compose(message)
                 else:
-                    await message.channel.send('잘못된 옵션 주어짐!')
+                    await message.channel.send('잘못된 옵션여유!')
 
             if message.content[1:].startswith('촛엉'):
                 await choDown.cho_down(message)
