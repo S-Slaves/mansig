@@ -4,7 +4,7 @@ import hgtk
 
 async def explain(message, name, explanation, usage, output):
     if message.content.split()[1] == name:
-        embed = discord.Embed(title=f"**s{name}**", color=message.author.color)
+        embed = discord.Embed(title=f"**!{name}**", color=message.author.color)
         embed.add_field(name="설명", value=explanation, inline=False)
         embed.add_field(name="사용법", value=usage, inline=False)
         embed.add_field(name="출력 형태", value=output, inline=True)
@@ -14,7 +14,7 @@ async def explain(message, name, explanation, usage, output):
 
 async def embedsend(message):
     if len(message.content.split()) == 1:
-        embed = discord.Embed(title="**명령어 도움!**", description="봇 접두사: s", color=message.author.color)
+        embed = discord.Embed(title="**명령어 도움!**", description="봇 접두사: !", color=message.author.color)
         embed.set_author(name="검색봇",
                          url="https://discord.com/api/oauth2/authorize?client_id=786122705169940530&permissions=0"
                              "&scope=bot",
