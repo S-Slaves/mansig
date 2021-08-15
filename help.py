@@ -4,7 +4,7 @@ import hgtk
 
 async def explain(message, name, explanation, usage, output):
     if message.content.split()[1] == name:
-        embed = discord.Embed(title=f"**!{name}**", color=message.author.color)
+        embed = discord.Embed(title=f"!**{name}**", color=message.author.color)
         embed.add_field(name="설명", value=explanation, inline=False)
         embed.add_field(name="사용법", value=usage, inline=False)
         embed.add_field(name="출력 형태", value=output, inline=True)
