@@ -6,3 +6,4 @@ secret.py
 *.pyc
 *.png
 botlog.txt
+/code/__pycache__
