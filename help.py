@@ -15,13 +15,9 @@ async def explain(message, name, explanation, usage, output):
 async def embedsend(message):
     if len(message.content.split()) == 1:
         embed = discord.Embed(title="**명령어 도움!**", description="봇 접두사: !", color=message.author.color)
-        embed.set_author(name="검색봇",
-                         url="https://discord.com/api/oauth2/authorize?client_id=786122705169940530&permissions=0"
-                             "&scope=bot",
-                         icon_url="https://images-ext-1.discordapp.net/external"
-                                  "/EmafdrGiKsiRNL7eRtkVudk_CScqz_6dJjmoJycXOvk/%3Fsize%3D1024/https/cdn"
-                                  ".discordapp.com/avatars/786122705169940530/73ed49091e5e6ff10e892eb5c5d58920"
-                                  ".webp?width=473&height=473")
+        embed.set_author(name="만식이",
+                         url="https://discord.com/api/oauth2/authorize?client_id=786122705169940530&permissions=0&scope=bot",
+                         icon_url="https://cdn.discordapp.com/attachments/792031369324134411/876298048014266388/0744c0966b7be9ab.png")
         embed.add_field(name="__기본__", value="`\\!`, `출력`, `안녕`, `핑`, `도움`", inline=False)
         embed.add_field(name="__서버 정보/유저 정보__", value="`채널`, `프사`", inline=False)
         embed.add_field(name="__도구__", value="`유닉스시간`, `달력`, `시간`, `qr`, `모스부호`, `점자`", inline=False)
