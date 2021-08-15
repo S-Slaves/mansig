@@ -1,5 +1,6 @@
 import hashlib
 import random
+import hgtk
 
 crypt_password = hashlib.sha256()
 mode = 0
@@ -45,7 +46,7 @@ async def fight(message, player_1_fight: Player, player_2_fight: Player):
         crt_weight = 2
     else:
         crt_weight = 1
-    if random.randint(0, 512) <= player_2_fight.agl * alc_weight:
+    if random.randint(0, 1536) <= player_2_fight.agl * alc_weight:
         if mode == 'realtime':
             await message.channel.send(f'{player_1_fight.name}의 공격 빗나감!')
         pass
@@ -55,10 +56,10 @@ async def fight(message, player_1_fight: Player, player_2_fight: Player):
         if mode == 'realtime':
             if crt_weight == 2:
                 await message.channel.send(
-                    f'{player_1_fight.name}이/가 {player_2_fight.name}에게 크리티컬 데미지 {real_dmg}를 줌! {player_2_fight.name} 남은 체력 {player_2_fight.hp}!')
+                    f'{hgtk.josa.attach(player_1_fight.name, hgtk.josa.I_GA)} {player_2_fight.name}에게 크리티컬 데미지 {real_dmg}를 줌! {player_2_fight.name} 남은 체력 {player_2_fight.hp}!')
             else:
                 await message.channel.send(
-                    f'{player_1_fight.name}이/가 {player_2_fight.name}에게 데미지 {real_dmg}를 줌! {player_2_fight.name} 남은 체력 {player_2_fight.hp}!')
+                    f'{hgtk.josa.attach(player_1_fight.name, hgtk.josa.I_GA)} {player_2_fight.name}에게 데미지 {real_dmg}를 줌! {player_2_fight.name} 남은 체력 {player_2_fight.hp}!')
 
 
 async def md5_battle(message):
