@@ -77,8 +77,12 @@ async def on_message(message):
                 await bot_log(message, '핑')
 
             if message.content[1:].startswith('도움'):
-                await help.embedsend(message)
-                await bot_log(message, '도움', 1, message.content[4:])
+                if len(message.content.split()) == 1:
+                    await help.explainWholeCommands(message)
+                    await bot_log(message, '도움')
+                else:
+                    await help.explainCommands(message)
+                    await bot_log(message, '도움', 1, message.content[4:])
 
             if message.content[1:] == '채널':
                 embed = discord.Embed(title='채널 목록!', description=message.guild.name, color=message.author.color)
