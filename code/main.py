@@ -2,9 +2,10 @@ import calendar
 import discord
 import hgtk
 import time
+import os
 import brailleConvert
 import secret
-import help
+import bot_help
 import morsecodeConvert
 import codeCreate
 import md5Battle
@@ -51,6 +52,7 @@ async def on_message_delete(message):
 
 @client.event
 async def on_message(message):
+    content = message.content
 
     if message.author.bot:
         pass
@@ -58,48 +60,48 @@ async def on_message(message):
     else:
         if message.content.startswith('\\!'):
             await message.delete()
-            await message.channel.send(message.content[3:])
+            await message.channel.send(message.content[2:])
             bot_log(message, '숨은출력')
 
         if message.content.startswith('!'):
-            if message.content[1:].startswith('출력'):
+            if content.split()[0] == '!출력':
                 await message.channel.send(message.content[4:])
                 bot_log(message, '출력')
 
-            if message.content[1:] == '안녕':
+            if message.content == '!안녕':
                 await message.channel.send('만식이여유~! 진지 잡쉈슈?')
                 bot_log(message, '안녕')
 
-            if message.content[1:] == '핑':
+            if message.content == '!핑':
                 await message.channel.send(f'{round(client.latency * 100)}ms!')
                 bot_log(message, '핑')
 
-            if message.content[1:].startswith('도움'):
+            if content.split()[0] == '!도움':
                 if len(message.content.split()) == 1:
-                    await message.channel.send(embed=help.explainWholeCommands())
+                    await message.channel.send(embed=bot_help.explainWholeCommands())
                 else:
-                    await message.channel.send(embed=help.explainCommands(message))
+                    await message.channel.send(embed=bot_help.explainCommands(message.content.split()[1]))
                 bot_log(message, '도움')
 
-            if message.content[1:] == '채널':
-                embed = discord.Embed(title='채널 목록!', description=message.guild.name, color=discord.color.from_rgb(184341))
+            if message.content == '!채널':
+                embed = discord.Embed(title='채널 목록!', description=message.guild.name, color=discord.Color.from_rgb(184341))
                 for var in message.guild.text_channels:
                     embed.add_field(name='', value=var.name, inline=False)
                 await message.channel.send(embed=embed)
                 bot_log(message, '채널')
 
-            if message.content[1:] == '프사':
+            if message.content == '!프사':
                 await message.channel.send(message.author.avatar_url)
                 bot_log(message, '프사')
 
-            if message.content[1:].startswith('유닉스시간'):
+            if content.split()[0] == '!유닉스시간':
                 await message.channel.send(time.time())
                 bot_log(message, '유닉스시간')
 
-            if message.content[1:].startswith('달력'):
+            if content.split()[0] == '!달력':
                 cmd = message.content.split()
                 if len(cmd) == 2:
-                    embed = discord.Embed(title=cmd[1], color=discord.color.from_rgb(184341))
+                    embed = discord.Embed(title=cmd[1], color=discord.Color.from_rgb(184341))
                     for var in range(12):
                         embed.add_field(name=str(var + 1), value=f'```{calendar.month(int(cmd[1]), var + 1)}```',
                                         inline=True)
@@ -111,51 +113,61 @@ async def on_message(message):
                     await message.channel.send('연도 또는 연도+월을 입력해주셔유!')
                 bot_log(message, '달력')
 
-            if message.content[1:].startswith('시간'):
+            if content.split()[0] == '!시간':
                 await message.channel.send(f'지금 시각은 {time.ctime()}래유~')
                 bot_log(message, '시간')
 
-            if message.content[1:].startswith('qr') or message.content[1:].startswith('QR'):
-                await codeCreate.qrcode_create(message)
+            if content.split()[0] == '!qr' or content.split()[0] == '!QR':
+                return_value = codeCreate.qrcode_create(message.content)
+                if len(return_value) == 1:
+                    await message.channel.send(return_value)
+                else:
+                    await message.channel.send(file=return_value[0])
+                    os.remove(return_value[1])
                 bot_log(message, 'qr')
 
-            if message.content[1:].startswith('바코드'):
-                await codeCreate.barcode_create(message)
-                bot_log(message, '바코드')
+            if content.split()[0] == '!바코드':
+                return_value = codeCreate.barcode_create(message.content)
+                if len(return_value) == 1:
+                    await message.channel.send(return_value)
+                else:
+                    await message.channel.send(file=return_value[0])
+                    os.remove(return_value[1])
+                bot_log(message, 'qr')
 
-            if message.content[1:].startswith('모스부호'):
-                await morsecodeConvert.morsecode_convert(message)
+            if content.split()[0] == '!모스부호':
+                await message.channel.send(morsecodeConvert.morsecode_convert(message.content))
                 bot_log(message, '모스부호')
 
-            if message.content[1:].startswith('점자 '):
-                await brailleConvert.braille_convert(message)
+            if content.split()[0] == '!점자':
+                await message.channel.send(brailleConvert.braille_convert(message.content))
                 bot_log(message, '점자')
 
-            if message.content[1:].startswith('점자변환'):
+            if content.split()[0] == '!점자변환':
                 if message.content.split()[1] == '-숫자로':
-                    await message.channel.send(brailleToolkit.braille_decompose(message))
-                    bot_log(message, )
+                    await message.channel.send(brailleToolkit.braille_decompose(message.content))
+                    bot_log(message, '점자변환')
                 elif message.content.split()[1] == '-점자로':
-                    await message.channel.send(brailleToolkit.braille_compose(message))
+                    await message.channel.send(brailleToolkit.braille_compose(message.content))
                 else:
                     await message.channel.send('잘못된 옵션여유!')
                 bot_log(message, '점자변환')
 
-            if message.content[1:].startswith('촛엉'):
-                await choDown.cho_down(message)
+            if content.split()[0] == '!촛엉':
+                await message.channel.send(choDown.cho_down(message))
                 bot_log(message, '촛엉')
             
-            if message.content[1:].startswith('BF') or message.content[1:].startswith('bf'):
+            if content.split()[0] == '!BF' or content.split()[0] == '!bf':
                 await BF.brainFuck(message)
                 bot_log(message, 'BF')
 
-            if message.content[1:].startswith('md5') or message.content[1:].startswith('md5배틀'):
+            if content.split()[0] == '!md5' or content.split()[0] == '!md5배틀':
                 await md5Battle.md5_battle(message)
                 bot_log(message, 'md5배틀')
 
-            if message.content[1:].startswith('지뢰찾기'):
+            if content.split()[0] == '!지뢰찾기':
                 a = message.content.split()
-                await message.channel.send(await mineSweepers.mine_sweepers(int(a[1]), int(a[2]), int(a[3])))
+                await message.channel.send(mineSweepers.mine_sweepers(int(a[1]), int(a[2]), int(a[3])))
                 bot_log(message, '지뢰찾기')
 
 client.run(secret.bot_token)

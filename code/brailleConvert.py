@@ -81,7 +81,7 @@ class NormalLetter:  # 한글이 아닌 문자 객체
 letter = HangulLetter('', '', '', -1)  # abbreviation 함수와의 호환을 위한 잉여 letter 객체
 
 
-async def abbreviation(cho, jung, jong, repl, mode='jj'):  # 점자 약자 변환을 위한 함수(한·점
+def abbreviation(cho, jung, jong, repl, mode='jj'):  # 점자 약자 변환을 위한 함수(한·점
     global letter
     if mode == 'cj':  # 초성 + 중성 약자
         if letter.cho not in ['ㄱ', 'ㅅ', 'ㅆ'] and letter.jung == 'ㅏ' and letter.jong == '' and letter.num != len(
@@ -113,7 +113,7 @@ async def abbreviation(cho, jung, jong, repl, mode='jj'):  # 점자 약자 변�
                 letter.braille = [letter.cho_braille, repl]
 
 
-async def braille_convert(message):
+def braille_convert(message):
     output_string = ''
 
     global letter
@@ -208,17 +208,17 @@ async def braille_convert(message):
             pass
         else:
             for i in range(len(abbr_list_cho_cj)):  # 초성 + 중성 약자 변환 (한·점 제12항~제14항)
-                await abbreviation(abbr_list_cho_cj[i], 'ㅏ', '', abbr_list_braille_cj[i], 'cj')
+                abbreviation(abbr_list_cho_cj[i], 'ㅏ', '', abbr_list_braille_cj[i], 'cj')
             for i in range(len(abbr_list_jung_jj)):  # 중성 + 종성 약자 변환 (한·점 제12항~제15항)
-                await abbreviation('', abbr_list_jung_jj[i], abbr_list_jong_jj[i], abbr_list_braille_jj[i], 'jj')
+                abbreviation('', abbr_list_jung_jj[i], abbr_list_jong_jj[i], abbr_list_braille_jj[i], 'jj')
             for i in range(len(abbr_list_jung_add_jj)):  # 중성 + 종성 약자 변환 (한·점 제12항~제15항)
-                await abbreviation('', abbr_list_jung_add_jj[i], abbr_list_jong_add_jj[i], abbr_list_braille_add_jj[i],
+                abbreviation('', abbr_list_jung_add_jj[i], abbr_list_jong_add_jj[i], abbr_list_braille_add_jj[i],
                                    'jj')
             for i in ['ㅅ', 'ㅈ', 'ㅊ', 'ㅆ', 'ㅉ']:
                 # 성, 정, 청, 썽, 쩡은 기존 ᅟᅧᆼ의 약자를 사용하여 표기 (한·점 제16항)
-                await abbreviation(i, 'ㅓ', 'ㅇ', '⠻')
+                abbreviation(i, 'ㅓ', 'ㅇ', '⠻')
             for i in range(len(abbr_list_jung_cjj)):
-                await abbreviation(abbr_list_cho_cjj[i], abbr_list_jung_cjj[i], abbr_list_jong_cjj[i],
+                abbreviation(abbr_list_cho_cjj[i], abbr_list_jung_cjj[i], abbr_list_jong_cjj[i],
                                    abbr_list_braille_cjj[i], 'cjj')  # '것'과 '껏'은 고유의 약자 사용 (한·점 제12항, 제14항)
 
     for j in abbr_word_list_letter:
@@ -251,4 +251,4 @@ async def braille_convert(message):
         for k in letter.braille:
             output_string += k  # 최종 산출이 들어가는 answerstring에 각 문자의 braille에 들어간 리스트에 있는 문자를 하나씩 결합
 
-    await message.channel.send(output_string)  # 출력
+    return output_string        # 출력

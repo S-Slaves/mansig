@@ -3,36 +3,40 @@ import random
 import discord
 import pathlib
 import barcode
-import os
 from barcode.writer import ImageWriter
 
-replace_dict = {" ": "-", "/": "／", "\\": "＼", ":": "：", "*": "∗", "?": "？", '"': '＂', '<': '＜', '>': '＞', '|': '｜'}
+replace_dict = {" ": "-", "/": "／", "\\": "＼", ":": "：",
+                "*": "∗", "?": "？", '"': '＂', '<': '＜', '>': '＞', '|': '｜'}
 
 
-async def qrcode_create(message):
+def qrcode_create(string):
     qr = qrcode.QRCode()
-    rn = random.randint(0, 10000000000000000)
-    qr.add_data(message.content[4:])
+    rn = str(hex(random.getrandbits(40))[2:])
+    if len(rn) != 10:
+        for i in range(10 - len(rn)):
+            rn = '0' + rn
+    qr.add_data(string[4:])
     qr.make()
     img = qr.make_image(fill='black', back_color='white')
-    pathstring = message.content[4:]
+    pathstring = string[4:]
     for i in replace_dict:
         pathstring = pathstring.replace(i, replace_dict[i])
     try:
         img.save(pathlib.Path(f'qr-code-{pathstring}-{rn}.png'), 'PNG')
-        await message.channel.send(file=discord.File(pathlib.Path(f'qr-code-{pathstring}-{rn}.png')))
-        os.remove(f'qr-code-{pathstring}-{rn}.png')
+        return (discord.File(pathlib.Path(f'qr-code-{pathstring}-{rn}.png')), f'qr-code-{pathstring}-{rn}.png')
     except FileNotFoundError:
-        await message.channel.send('생성 중 오류 발생!')
+        return ('생성 중 오류 발생!')
 
 
-async def barcode_create(message):
-    rn = random.randint(0, 10000000000000000)
-    pathstring = message.content[5:]
+def barcode_create(string):
+    rn = str(hex(random.getrandbits(40))[2:])
+    if len(rn) != 10:
+        for i in range(10 - len(rn)):
+            rn = '0' + rn
+    pathstring = string[5:]
     try:
         img = barcode.get('ean13', pathstring, writer=ImageWriter())
         img.save(pathlib.Path(f'barcode-{pathstring}-{rn}'))
-        await message.channel.send(file=discord.File(pathlib.Path(f'barcode-{pathstring}-{rn}.png')))
-        os.remove(f'barcode-{pathstring}-{rn}.png')
+        return (discord.File(pathlib.Path(f'barcode-{pathstring}-{rn}.png')), f'barcode-{pathstring}-{rn}.png')
     except barcode.errors.IllegalCharacterError:
-        await message.channel.send('바코드에 적합하지 않은 문자열이에요!')
+        return ('바코드에 적합하지 않은 문자열이에요!')

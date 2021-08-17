@@ -5,7 +5,7 @@ numlist = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight
 minefield = []
 
 
-async def mine_sweepers(x_size, y_size, bombnum):                                       
+def mine_sweepers(x_size, y_size, bombnum):                                       
     global minefield
     minefield = []
     output_minefield = ''
