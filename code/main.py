@@ -117,9 +117,9 @@ async def on_message(message):
                 await message.channel.send(f'지금 시각은 {time.ctime()}래유~')
                 await bot_log(message, '시간')
 
-            if message.content[1:].startswith('qr'):
+            if message.content[1:].startswith('qr') or message.content[1:].startswith('QR'):
                 await codeCreate.qrcode_create(message)
-                await bot_log(message, 'qr', 1, message.content[4:])
+                await bot_log(message, 'QR', 1, message.content[4:])
 
             if message.content[1:].startswith('바코드'):
                 await codeCreate.barcode_create(message)
@@ -145,7 +145,7 @@ async def on_message(message):
                 await choDown.cho_down(message)
                 await bot_log(message, '촛엉', 1, message.content[4:])
             
-            if message.content[1:].startswith('BF'):
+            if message.content[1:].startswith('BF') or message.content[1:].startswith('bf'):
                 await BF.brainFuck(message)
                 await bot_log(message, 'BF', 1, message.content[4:])
 
