@@ -31,7 +31,7 @@ async def barcode_create(message):
     pathstring = message.content[5:]
     try:
         img = barcode.get('ean13', pathstring, writer=ImageWriter())
-        img.save(pathlib.Path(f'qr-code-{pathstring}-{rn}'))
+        img.save(pathlib.Path(f'barcode-{pathstring}-{rn}'))
         await message.channel.send(file=discord.File(pathlib.Path(f'barcode-{pathstring}-{rn}.png')))
         os.remove(f'barcode-{pathstring}-{rn}.png')
     except barcode.errors.IllegalCharacterError:

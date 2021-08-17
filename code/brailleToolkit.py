@@ -1,6 +1,6 @@
-async def braille_decompose(message):
+def braille_decompose(string):
     output_list = []
-    for i in list(" ".join(message.content.split()[2:])):
+    for i in list(" ".join(string.split()[2:])):
         a = ord(i) - 10240
         braille_string = ''
         if a == 0:
@@ -12,11 +12,11 @@ async def braille_decompose(message):
             else:
                 pass
         output_list.append(braille_string)
-    await message.channel.send(" ".join(output_list))
+    return " ".join(output_list)
 
 
-async def braille_compose(message):
-    a = message.content.split()[2:]
+def braille_compose(string):
+    a = string.split()[2:]
     output_string = ''
     for i in a:
         n = 0
@@ -29,4 +29,4 @@ async def braille_compose(message):
             else:
                 n += 2 ** (int(j) - 1)
         output_string += chr(10240 + n)
-    await message.channel.send(output_string)
+    return output_string
