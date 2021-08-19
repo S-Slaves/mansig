@@ -17,14 +17,20 @@ import BF
 client = discord.Client()
 
 def bot_log(message, command_name):
-    if len(message.content.split()) == 1:
+    if len(message.content.split()) == 1 and not message.content.startswith('\\!'):
         string = ''
         outfile = open('botlog.txt', 'a')
         print(f'{hgtk.josa.attach(message.author.name, hgtk.josa.I_GA)} {command_name} 명령어 사용')
         outfile.write(f'\n{message.author.name} {command_name}')
         outfile.close()
-    else:
+    elif len(message.content.split()) == 1:
         string = " ".join(message.content.split()[1:])
+        outfile = open('botlog.txt', 'a')
+        print(f'{hgtk.josa.attach(message.author.name, hgtk.josa.I_GA)} {command_name} 명령어 사용하여 {string} 실행')
+        outfile.write(f'\n{message.author.name} {command_name} {string}')
+        outfile.close()
+    else:
+        string = message.content[2:]
         outfile = open('botlog.txt', 'a')
         print(f'{hgtk.josa.attach(message.author.name, hgtk.josa.I_GA)} {command_name} 명령어 사용하여 {string} 실행')
         outfile.write(f'\n{message.author.name} {command_name} {string}')
@@ -47,7 +53,8 @@ async def on_ready():
 
 @client.event
 async def on_message_delete(message):
-    print(f'\n{message.author.name}: {message.content}')
+    if not message.content.startswith('\\!'):
+        print(f'\n{message.author.name}: {message.content}')
 
 
 @client.event
@@ -167,7 +174,6 @@ async def on_message(message):
 
             if content.split()[0] == '!지뢰찾기':
                 a = message.content.split()
-                await message.channel.send(mineSweepers.mine_sweepers(int(a[1]), int(a[2]), int(a[3])))
-                bot_log(message, '지뢰찾기')
+                await message.channel.send(mineSweepers.mineSweepers(int(a[1]), int(a[2]), int(a[3])))
 
 client.run(secret.bot_token)

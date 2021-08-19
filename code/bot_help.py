@@ -22,7 +22,7 @@ def explainWholeCommands():
     embed.add_field(name="__도구__", value="`유닉스시간`, `달력`, `시간`, `QR`, `바코드`, `모스부호`, `점자`, `점자변환`, `BF`", inline=False)
     embed.add_field(name="__재미__", value="`md5배틀`, `촛엉`, `지뢰찾기`", inline=False)
     embed.add_field(name="__궁금증이 있다면?__", value="!도움 [명령어]를 써 주셔유~", inline=False)
-    embed.set_footer(text="Copyright ⓒ 2020 RoN#2253. All Rights Reserved.")
+    embed.set_footer(text="Copyright ⓒ 2020 RoNSipinoa#2253. All Rights Reserved.")
     return embed
 
 

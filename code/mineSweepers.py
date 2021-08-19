@@ -1,68 +1,84 @@
 import random
 
+englishNum = ['zero', 'one', 'two', 'three',
+              'four', 'five', 'six', 'seven', 'eight']
 
-numlist = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight"]      # 출력 시 필요한 숫자
-minefield = []
 
+class mineCell:
+    def __init__(self):
+        self.num = 0
+        self.isBomb = False
+        self.isRevealed = False
 
-def mine_sweepers(x_size, y_size, bombnum):                                       
-    global minefield
-    minefield = []
-    output_minefield = ''
-
-    def neighboring(x, y):                                                              # 이웃하는 지뢰의 수에 따라 칸의 숫자 결정
-        global minefield
-        if minefield[y][x] == 'X':
-            if x == 0:
-                x_scope = (0, 1)
-            elif x == x_size - 1:
-                x_scope = (x - 1, x)
-            else:
-                x_scope = (x - 1, x, x + 1)
-            if y == 0:
-                y_scope = (0, 1)
-            elif y == y_size - 1:
-                y_scope = (y - 1, y)
-            else:
-                y_scope = (y - 1, y, y + 1)
-            for x_range in x_scope:
-                for y_range in y_scope:
-                    if minefield[y_range][x_range] != 'X':
-                        minefield[y_range][x_range] += 1
+    def __str__(self):
+        if self.isBomb == True:
+            return '||:boom:||'
         else:
-            pass
-    for i in range(y_size):                                                            # x*y 크기의 영행렬 생성
-        minefield.append([0 for x in range(x_size)])
-
-    for i in range(bombnum):
-        random_x = random.randint(0, x_size - 1)
-        random_y = random.randint(0, y_size - 1)
-        minefield[random_y][random_x] = 'X'                                           # 푹탄 배치
-
-    for x_ in range(x_size):                                                          # 폭탄에 이웃하는 칸 숫자 증가
-        for y_ in range(y_size):
-            neighboring(y_, x_)
-
-    zero_revealed = False
-    for i in minefield:
-        for j in i:
-            if j == 'X':
-                output_minefield += '||:boom:||'                                     # 실제 출력
-            elif j == 0 and not zero_revealed:
-                output_minefield += ':zero:'                                         # 첫 번째 0 공개
-                zero_revealed = True
+            if self.isRevealed:
+                return f':{englishNum[self.num]}:'
             else:
-                output_minefield += f'||:{numlist[j]}:||'
-        output_minefield += '\n'
+                return f'||:{englishNum[self.num]}:||'
 
-    if x_size >= 13 or y_size >= 13:                                                 # 13*13 넘으면 2000자 제한 풀림
-        output_minefield = ''
-        for i in minefield:
-            for j in i:
-                if j == 'X':
-                    output_minefield += 'X'
-                else:
-                    output_minefield += str(j)
-            output_minefield += '\n'
-        output_minefield = f'```{output_minefield}```'
-    return output_minefield
+    def increment(self):
+        self.num += 1
+
+
+class mineField:
+    def __init__(self, x, y, bombNum):
+        self.field = [[mineCell()
+                       for i in range(x)] for j in range(y)]
+        self.x_size = x
+        self.y_size = y
+        self.bombNum = bombNum
+
+    def fetchCell(self, x, y):
+        return self.field[y][x]
+
+    def fetchNeighboringCells(self, x, y):
+        returnlist = []
+        x_range = [k for k in range(x-1, x+2) if k >= 0 and k <= self.x_size-1]
+        y_range = [k for k in range(y-1, y+2) if k >= 0 and k <= self.y_size-1]
+        for i in x_range:
+            for j in y_range:
+                returnlist.append(self.fetchCell(i, j))
+        return returnlist
+
+
+def mineSweepers(x_size, y_size, bombNum):
+    if bombNum >= x_size * y_size:
+        return '아이구 지뢰 숫자가 너무 많아유!!'
+    if x_size > 9 or y_size > 9:
+        return '현재 !지뢰찾기는 디스코드의 문제와 2000자 자수 제한으로 9*9 판까지만 지원해유~'
+    returnString = ''
+    revealList = []
+    field = mineField(x_size, y_size, bombNum)
+    while bombNum > 0:
+        cell = field.fetchCell(random.randrange(
+            0, x_size), random.randrange(0, y_size))
+        if not cell.isBomb:
+            cell.isBomb = True
+            bombNum -= 1
+
+    for x in range(x_size):
+        for y in range(y_size):
+            if field.fetchCell(x, y).isBomb:
+                for k in field.fetchNeighboringCells(x, y):
+                    k.increment()
+
+    for i in range(0, 9):
+        for x in range(x_size):
+            for y in range(y_size):
+                if field.fetchCell(x, y).num == i and not field.fetchCell(x, y).isBomb:
+                    revealList.append((x, y))
+        if len(revealList) != 0:
+            break
+
+    revealItem = random.choice(revealList)
+    field.fetchCell(revealItem[0], revealItem[1]).isRevealed = True
+
+    for i in field.field:
+        for j in i:
+            returnString += str(j)
+        returnString += '\n'
+
+    return returnString
