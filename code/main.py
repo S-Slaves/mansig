@@ -12,7 +12,6 @@ import md5Battle
 import choDown
 import brailleToolkit
 import mineSweepers
-import BF
 
 client = discord.Client()
 
@@ -23,7 +22,7 @@ def bot_log(message, command_name):
         print(f'{hgtk.josa.attach(message.author.name, hgtk.josa.I_GA)} {command_name} 명령어 사용')
         outfile.write(f'\n{message.author.name} {command_name}')
         outfile.close()
-    elif len(message.content.split()) == 1:
+    elif len(message.content.split()) > 1:
         string = " ".join(message.content.split()[1:])
         outfile = open('botlog.txt', 'a')
         print(f'{hgtk.josa.attach(message.author.name, hgtk.josa.I_GA)} {command_name} 명령어 사용하여 {string} 실행')
@@ -163,10 +162,6 @@ async def on_message(message):
             if content.split()[0] == '!촛엉':
                 await message.channel.send(choDown.cho_down(message))
                 bot_log(message, '촛엉')
-            
-            if content.split()[0] == '!BF' or content.split()[0] == '!bf':
-                await BF.brainFuck(message)
-                bot_log(message, 'BF')
 
             if content.split()[0] == '!md5' or content.split()[0] == '!md5배틀':
                 await md5Battle.md5_battle(message)

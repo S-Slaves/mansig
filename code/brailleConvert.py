@@ -113,7 +113,7 @@ def abbreviation(cho, jung, jong, repl, mode='jj'):  # 점자 약자 변환을 �
                 letter.braille = [letter.cho_braille, repl]
 
 
-def braille_convert(message):
+def braille_convert(string):
     output_string = ''
 
     global letter
@@ -124,7 +124,7 @@ def braille_convert(message):
 
     n = -1
 
-    for i in list(message.content[4:]):  # 문자열을 한글/기타로 나눈 뒤 음절 단위로 나눔
+    for i in list(" ".join(string.split()[1:])):  # 문자열을 한글/기타로 나눈 뒤 음절 단위로 나눔
         if hgtk.checker.is_hangul(i):
             each_word_list.append(list(hgtk.letter.decompose(i)) + ['hangul'])
         else:
@@ -222,8 +222,8 @@ def braille_convert(message):
                                    abbr_list_braille_cjj[i], 'cjj')  # '것'과 '껏'은 고유의 약자 사용 (한·점 제12항, 제14항)
 
     for j in abbr_word_list_letter:
-        m = re.search(f'^({j})', message.content[4:])
-        n = re.search(f'[^가-힣]({j})', message.content[4:])
+        m = re.search(f'^({j})', " ".join(string.split()[1:]))
+        n = re.search(f'[^가-힣]({j})', " ".join(string.split()[1:]))
         if m is not None:  # 약어 적용 - 문두에 나올 시
             k = m.start()  # 인덱스 값
             for i in range(len(j)):

@@ -19,7 +19,7 @@ def explainWholeCommands():
                      icon_url="https://cdn.discordapp.com/attachments/792031369324134411/876298048014266388/0744c0966b7be9ab.png")
     embed.add_field(name="__기본__", value="`\\!`, `출력`, `안녕`, `핑`, `도움`", inline=False)
     embed.add_field(name="__서버 정보/유저 정보__", value="`채널`, `프사`", inline=False)
-    embed.add_field(name="__도구__", value="`유닉스시간`, `달력`, `시간`, `QR`, `바코드`, `모스부호`, `점자`, `점자변환`, `BF`", inline=False)
+    embed.add_field(name="__도구__", value="`유닉스시간`, `달력`, `시간`, `QR`, `바코드`, `모스부호`, `점자`, `점자변환`", inline=False)
     embed.add_field(name="__재미__", value="`md5배틀`, `촛엉`, `지뢰찾기`", inline=False)
     embed.add_field(name="__궁금증이 있다면?__", value="!도움 [명령어]를 써 주셔유~", inline=False)
     embed.set_footer(text="Copyright ⓒ 2020 RoNSipinoa#2253. All Rights Reserved.")
@@ -72,9 +72,6 @@ def explainCommands(arg):
     elif arg == '점자변환':
         return explain('점자변환', '만식이가 주어진 점자를 숫자로(1~6점), 숫자를 점자로 변환합니다.', '`!점자변환 -숫자로 (점자)`\n`!점자변환 -점자로 (스페이스로 구분된 1에서 8까지의 숫자)',
                     '문자열, 점자(-점자로 옵션 적용 시) 또는 숫자(-숫자로 옵션 적용 시)')
-    elif arg == 'BF' or arg == 'bf':
-        return explain('BF', '만식이가 Brainf*ck(브레인퍽) 코드를 실행해 줍니다.', '`!BF(또는 !bf) (실행하고 싶은 BF 코드)',
-                    '문자열, BF 코드의 실행 결과\n이 코드는 BF 코드에 ,가 들어가 있을 경우 인풋을 받습니다.')
     elif arg == 'md5' or arg == 'md5배틀':
         return explain('md5배틀', '만식이가 둘 사이에 싸움을 붙입니다. -자세히 옵션을 통해 방어력, 크리티컬 확률, 순발력까지 확인 가능합니다. -생중계 옵션(관리자 전용)은 생중계를 지원합니다.', '`!md5배틀 (문자열 1) (문자열 2)`\n`!md5배틀 -자세히 (문자열 1) (문자열 2)`\n`!md5배틀 -생중계 (문자열 1) (문자열 2)`',
                     '문자열, 각 문자열의 체력/공격력/민첩성(+방어력/크리티컬률/순발력, -자세히 옵션 설정 시)\n싸우는 과정(-생중계 옵션 설정 시)\n승자')
